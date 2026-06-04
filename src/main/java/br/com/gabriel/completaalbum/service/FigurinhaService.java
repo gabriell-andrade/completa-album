@@ -66,4 +66,9 @@ public class FigurinhaService {
                         "Figurinha não encontrada: " + codigo
                 ));
     }
+
+    public List<Figurinha> listarPorSecao(String secao) {
+
+        return repository.findBySecaoByOrdemAsc(secao);
+    }
 }

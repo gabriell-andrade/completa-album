@@ -52,4 +52,11 @@ public class FigurinhaController {
     ) {
         return service.buscarPorCodigo(codigo);
     }
+
+    @GetMapping("/figurinhas/secao/{secao}")
+    public List<Figurinha> listarPorSecao(
+            @PathVariable String secao
+    ) {
+        return service.listarPorSecao(secao);
+    }
 }

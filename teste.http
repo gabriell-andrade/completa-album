@@ -27,3 +27,15 @@ GET http://localhost:8080/figurinhas/CC14
 ###
 
 GET http://localhost:8080/figurinhas/XYZ999
+
+###
+
+GET http://localhost:8080/figurinhas/secao/Brasil
+
+###
+
+GET http://localhost:8080/figurinhas/secao/Argentina
+
+###
+
+GET http://localhost:8080/figurinhas/secao/FIFA
