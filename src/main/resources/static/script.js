@@ -1,3 +1,62 @@
+let secoesAbertas =
+    JSON.parse(
+        localStorage.getItem(
+            "secoesAbertas"
+        ) || "[]"
+    );
+
+const bandeiras = {
+
+    "Mexico": "🇲🇽",
+    "Africa_do_Sul": "🇿🇦",
+    "Coreia_do_Sul": "🇰🇷",
+    "Tchequia": "🇨🇿",
+    "Canada": "🇨🇦",
+    "Bosnia": "🇧🇦",
+    "Catar": "🇶🇦",
+    "Suica": "🇨🇭",
+    "Brasil": "🇧🇷",
+    "Marrocos": "🇲🇦",
+    "Haiti": "🇭🇹",
+    "Escocia": "🏴",
+    "Estados_Unidos": "🇺🇸",
+    "Paraguai": "🇵🇾",
+    "Australia": "🇦🇺",
+    "Turquia": "🇹🇷",
+    "Alemanha": "🇩🇪",
+    "Curacao": "🇨🇼",
+    "Costa_do_Marfim": "🇨🇮",
+    "Equador": "🇪🇨",
+    "Holanda": "🇳🇱",
+    "Japao": "🇯🇵",
+    "Suecia": "🇸🇪",
+    "Tunisia": "🇹🇳",
+    "Belgica": "🇧🇪",
+    "Egito": "🇪🇬",
+    "Ira": "🇮🇷",
+    "Nova_Zelandia": "🇳🇿",
+    "Espanha": "🇪🇸",
+    "Cabo_Verde": "🇨🇻",
+    "Arabia_Saudita": "🇸🇦",
+    "Uruguai": "🇺🇾",
+    "Franca": "🇫🇷",
+    "Senegal": "🇸🇳",
+    "Iraque": "🇮🇶",
+    "Noruega": "🇳🇴",
+    "Argentina": "🇦🇷",
+    "Argelia": "🇩🇿",
+    "Austria": "🇦🇹",
+    "Jordania": "🇯🇴",
+    "Portugal": "🇵🇹",
+    "Congo": "🇨🇩",
+    "Uzbequistao": "🇺🇿",
+    "Colombia": "🇨🇴",
+    "Inglaterra": "🏴",
+    "Croacia": "🇭🇷",
+    "Gana": "🇬🇭",
+    "Panama": "🇵🇦"
+};
+
 let todasFigurinhas = [];
 
 async function carregarProgresso() {
@@ -127,8 +186,11 @@ function renderizarFigurinhas() {
             titulo.className =
                 "titulo-secao";
 
+            const bandeira =
+                bandeiras[secao] || "🏳️";
+
             titulo.textContent =
-                `▶ ${secao} (${obtidasSecao}/${totalSecao} • ${percentual}%)`;
+                `▼ ${bandeira} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
 
             secaoDiv.appendChild(
                 titulo
@@ -142,35 +204,69 @@ function renderizarFigurinhas() {
             grade.className =
                 "grade";
 
+            const aberta =
+                busca ||
+                secoesAbertas.includes(
+                    secao
+                );
+
             grade.style.display =
-                busca
+                aberta
                     ? "flex"
                     : "none";
+
+            titulo.textContent =
+                aberta
+                    ? `▼ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`
+                    : `▶ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
 
             titulo.addEventListener(
                 "click",
                 () => {
 
-                    const aberta =
+                    const estaAberta =
                         grade.style.display
                         === "flex";
 
-                    if (aberta) {
+                    if (estaAberta) {
 
                         grade.style.display =
                             "none";
 
+                        secoesAbertas =
+                            secoesAbertas.filter(
+                                s => s !== secao
+                            );
+
                         titulo.textContent =
-                            `▶ ${secao} (${obtidasSecao}/${totalSecao} • ${percentual}%)`;
+                            `▶ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
 
                     } else {
 
                         grade.style.display =
                             "flex";
 
+                        if (
+                            !secoesAbertas.includes(
+                                secao
+                            )
+                        ) {
+
+                            secoesAbertas.push(
+                                secao
+                            );
+                        }
+
                         titulo.textContent =
-                            `▼ ${secao} (${obtidasSecao}/${totalSecao} • ${percentual}%)`;
+                            `▼ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
                     }
+
+                    localStorage.setItem(
+                        "secoesAbertas",
+                        JSON.stringify(
+                            secoesAbertas
+                        )
+                    );
                 }
             );
 
