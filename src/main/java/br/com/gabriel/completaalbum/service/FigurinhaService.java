@@ -1,6 +1,7 @@
 package br.com.gabriel.completaalbum.service;
 
 import br.com.gabriel.completaalbum.entity.Figurinha;
+import br.com.gabriel.completaalbum.exception.FigurinhaNaoEncontradaException;
 import br.com.gabriel.completaalbum.repository.FigurinhaRepository;
 import org.springframework.stereotype.Service;
 import br.com.gabriel.completaalbum.dto.ProgressoResponse;
@@ -32,9 +33,8 @@ public class FigurinhaService {
 
         Figurinha figurinha = repository.findById(codigo)
                 .orElseThrow(() ->
-                        new RuntimeException(
-                                "Figurinha não encontrada: " + codigo
-                        ));
+                        new FigurinhaNaoEncontradaException(codigo)
+                );
 
         figurinha.setObtida(!figurinha.getObtida());
 
@@ -62,13 +62,13 @@ public class FigurinhaService {
     public Figurinha buscarPorCodigo(String codigo) {
 
         return repository.findById(codigo)
-                .orElseThrow(() -> new RuntimeException(
-                        "Figurinha não encontrada: " + codigo
-                ));
+                .orElseThrow(() ->
+                        new FigurinhaNaoEncontradaException(codigo)
+                );
     }
 
     public List<Figurinha> listarPorSecao(String secao) {
 
-        return repository.findBySecaoByOrdemAsc(secao);
+        return repository.findBySecaoOrderByOrdemAsc(secao);
     }
 }

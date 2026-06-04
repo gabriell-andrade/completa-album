@@ -39,3 +39,7 @@ GET http://localhost:8080/figurinhas/secao/Argentina
 ###
 
 GET http://localhost:8080/figurinhas/secao/FIFA
+
+###
+
+GET http://localhost:8080/figurinhas/XYZ999

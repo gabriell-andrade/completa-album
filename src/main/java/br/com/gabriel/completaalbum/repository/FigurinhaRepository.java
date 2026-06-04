@@ -12,7 +12,7 @@ public interface FigurinhaRepository
 
     List<Figurinha> findAllByOrderByOrdemAsc();
 
-    List<Figurinha> findBySecaoByOrdemAsc(String secao);
+    List<Figurinha> findBySecaoOrderByOrdemAsc(String secao);
 
     long countByObtida(Boolean obtida);
 }
