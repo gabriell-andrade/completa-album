@@ -48,29 +48,89 @@ async function carregarFigurinhas() {
 
     Object.keys(secoes).forEach(secao => {
 
+        const secaoDiv =
+            document.createElement("div");
+
+        secaoDiv.className = "secao";
+
+        const totalSecao = secoes[secao].length;
+
+        const obtidasSecao =
+            secoes[secao].filter(
+                figurinha => figurinha.obtida
+            ).length;
+
         const titulo =
             document.createElement("h2");
 
-        titulo.textContent = secao;
+        titulo.className = "titulo-secao";
 
-        container.appendChild(titulo);
+        titulo.textContent =
+            `${secao} (${obtidasSecao}/${totalSecao})`;
+
+        titulo.textContent =
+            `▶ ${secao} (${obtidasSecao}/${totalSecao})`;
+
+        titulo.addEventListener("click", () => {
+
+            const aberta =
+                grade.style.display === "flex";
+
+            if (aberta) {
+
+                grade.style.display = "none";
+
+                titulo.textContent =
+                    `▶ ${secao} (${obtidasSecao}/${totalSecao})`;
+
+            } else {
+
+                grade.style.display = "flex";
+
+                titulo.textContent =
+                    `▼ ${secao} (${obtidasSecao}/${totalSecao})`;
+            }
+        });
+
+        secaoDiv.appendChild(titulo);
+
+        const grade =
+            document.createElement("div");
+
+        grade.className = "grade";
+
+        grade.style.display = "none";
 
         secoes[secao].forEach(figurinha => {
 
             const div =
                 document.createElement("div");
 
-            div.className = "figurinha";
+            div.className =
+                figurinha.obtida
+                    ? "figurinha obtida"
+                    : "figurinha faltante";
+
+            let numero = figurinha.codigo;
+
+            if (figurinha.codigo !== "00") {
+                numero =
+                    figurinha.codigo.replace(/^[A-Z]+/, "");
+            }
 
             div.textContent =
-                `${figurinha.obtida ? "☑" : "☐"} ${figurinha.codigo}`;
+                `${figurinha.obtida ? "☑" : "☐"} ${numero}`;
 
             div.addEventListener("click", () => {
                 alternarFigurinha(figurinha.codigo);
             });
 
-            container.appendChild(div);
+            grade.appendChild(div);
         });
+
+        secaoDiv.appendChild(grade);
+
+        container.appendChild(secaoDiv);
     });
 }
 
