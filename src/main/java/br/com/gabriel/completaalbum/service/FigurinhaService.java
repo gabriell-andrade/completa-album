@@ -3,6 +3,7 @@ package br.com.gabriel.completaalbum.service;
 import br.com.gabriel.completaalbum.entity.Figurinha;
 import br.com.gabriel.completaalbum.repository.FigurinhaRepository;
 import org.springframework.stereotype.Service;
+import br.com.gabriel.completaalbum.dto.ProgressoResponse;
 
 import java.util.List;
 
@@ -38,5 +39,23 @@ public class FigurinhaService {
         figurinha.setObtida(!figurinha.getObtida());
 
         return repository.save(figurinha);
+    }
+
+    public ProgressoResponse obterProgresso() {
+
+        long obtidas = repository.countByObtida(true);
+
+        long total = repository.count();
+
+        long faltantes = total - obtidas;
+
+        double percentual = (obtidas * 100.0) / total;
+
+        return new ProgressoResponse(
+                obtidas,
+                faltantes,
+                total,
+                percentual
+        );
     }
 }
