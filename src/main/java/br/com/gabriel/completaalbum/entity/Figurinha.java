@@ -25,7 +25,7 @@ public class Figurinha {
     public Figurinha() {
     }
 
-    public Figurinha(String codigo, String secao, Integer ordem, Boolean obtida) {
+    public Figurinha(String codigo, String secao, Integer ordem) {
         this.codigo = codigo;
         this.secao = secao;
         this.ordem = ordem;
