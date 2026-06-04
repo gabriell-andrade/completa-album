@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+}
+
+.figurinha {
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.figurinha:hover {
+    background-color: #f0f0f0;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.figurinha {
+    padding: 3px 0;
+}
+
+.barra-container {
+    width: 100%;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#barra-progresso {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50;
+    transition: width 0.3s;
+}
