@@ -126,15 +126,28 @@ function renderizarFigurinhas() {
                 return true;
             }
 
-            return (
-                figurinha.codigo
-                    .toLowerCase()
-                    .includes(busca)
-                ||
-                figurinha.secao
-                    .toLowerCase()
-                    .includes(busca)
-            );
+            const codigo =
+                figurinha.codigo.toLowerCase();
+
+            const secao =
+                figurinha.secao.toLowerCase();
+
+            if (codigo === busca) {
+                return true;
+            }
+
+            if (secao.includes(busca)) {
+                return true;
+            }
+
+            if (
+                busca.length <= 2 &&
+                codigo.includes(busca)
+            ) {
+                return true;
+            }
+
+            return false;
         })
         .forEach(figurinha => {
 
