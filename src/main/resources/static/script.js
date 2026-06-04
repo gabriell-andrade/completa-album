@@ -1,11 +1,100 @@
 let entidadeSelecionada = null;
 
+let paisSelecionado = null;
+
 let secoesAbertas =
     JSON.parse(
         localStorage.getItem(
             "secoesAbertas"
         ) || "[]"
     );
+
+const grupos = {
+
+    "Grupo A": [
+        "Mexico",
+        "Africa_do_Sul",
+        "Coreia_do_Sul",
+        "Tchequia"
+    ],
+
+    "Grupo B": [
+        "Canada",
+        "Bosnia",
+        "Catar",
+        "Suica"
+    ],
+
+    "Grupo C": [
+        "Brasil",
+        "Marrocos",
+        "Haiti",
+        "Escocia"
+    ],
+
+    "Grupo D": [
+        "Estados_Unidos",
+        "Paraguai",
+        "Australia",
+        "Turquia"
+    ],
+
+    "Grupo E": [
+        "Alemanha",
+        "Curacao",
+        "Costa_do_Marfim",
+        "Equador"
+    ],
+
+    "Grupo F": [
+        "Holanda",
+        "Japao",
+        "Suecia",
+        "Tunisia"
+    ],
+
+    "Grupo G": [
+        "Belgica",
+        "Egito",
+        "Ira",
+        "Nova_Zelandia"
+    ],
+
+    "Grupo H": [
+        "Espanha",
+        "Cabo_Verde",
+        "Arabia_Saudita",
+        "Uruguai"
+    ],
+
+    "Grupo I": [
+        "Franca",
+        "Senegal",
+        "Iraque",
+        "Noruega"
+    ],
+
+    "Grupo J": [
+        "Argentina",
+        "Argelia",
+        "Austria",
+        "Jordania"
+    ],
+
+    "Grupo K": [
+        "Portugal",
+        "Congo",
+        "Uzbequistao",
+        "Colombia"
+    ],
+
+    "Grupo L": [
+        "Inglaterra",
+        "Croacia",
+        "Gana",
+        "Panama"
+    ]
+};
 
 const bandeiras = {
 
@@ -224,6 +313,13 @@ function renderizarFigurinhas() {
                 figurinha.secao
                 ].push(figurinha);
         });
+
+    const secoesNormais =
+        Object.keys(secoes)
+            .filter(
+                secao =>
+                    !entidades.includes(secao)
+            );
 
     const secoesOrdenadas = [
         ...entidades.filter(
@@ -469,10 +565,174 @@ function renderizarFigurinhas() {
 
         } else {
 
-            container.appendChild(
-                secaoDiv
-            );
+            return;
         }
+    });
+
+    Object.entries(grupos)
+        .forEach(([nomeGrupo, paises]) => {
+
+            const tituloGrupo =
+                document.createElement("h2");
+
+            tituloGrupo.className =
+                "grupo-titulo";
+
+            tituloGrupo.textContent =
+                `🏆 ${nomeGrupo}`;
+
+            container.appendChild(
+                tituloGrupo
+            );
+
+            const grid =
+                document.createElement("div");
+
+            grid.className =
+                "paises-grid";
+
+            container.appendChild(
+                grid
+            );
+
+            paises.forEach(pais => {
+
+                if (!secoes[pais]) {
+                    return;
+                }
+
+                const total =
+                    secoes[pais].length;
+
+                const obtidas =
+                    secoes[pais].filter(
+                        f => f.obtida
+                    ).length;
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card-pais";
+
+                if (
+                    paisSelecionado === pais
+                ) {
+
+                    card.classList.add(
+                        "ativo"
+                    );
+                }
+
+                card.innerHTML = `
+                    <div class="nome-pais">
+                        ${bandeiras[pais] || "🏳️"}
+                        ${pais.replaceAll("_", " ")}
+                    </div>
+                
+                    <div class="progresso-pais">
+                        ${obtidas}/${total}
+                    </div>
+                `;
+
+                card.addEventListener(
+                    "click",
+                    () => {
+
+                        paisSelecionado =
+                            paisSelecionado === pais
+                                ? null
+                                : pais;
+
+                        renderizarFigurinhas();
+                    }
+                );
+
+                grid.appendChild(
+                    card
+                );
+
+                if (
+                    paisSelecionado === pais
+                ) {
+
+                    const tituloPaisSelecionado =
+                        document.createElement("div");
+
+                    tituloPaisSelecionado.className =
+                        "titulo-pais-selecionado";
+
+                    tituloPaisSelecionado.textContent =
+                        `📂 ${bandeiras[pais] || "🏳️"} ${pais.replaceAll("_", " ")}`;
+
+                    container.appendChild(
+                        tituloPaisSelecionado
+                    );
+
+                    const grade =
+                        document.createElement(
+                            "div"
+                        );
+
+                    grade.className =
+                        "grade";
+
+                    grade.style.marginTop =
+                        "10px";
+
+                    secoes[pais]
+                        .forEach(figurinha => {
+
+                            const div =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            div.className =
+                                figurinha.obtida
+                                    ? "figurinha obtida"
+                                    : "figurinha faltante";
+
+                            let numero =
+                                figurinha.codigo;
+
+                            if (
+                                figurinha.codigo
+                                !== "00"
+                            ) {
+
+                                numero =
+                                    figurinha.codigo
+                                        .replace(
+                                            /^[A-Z]+/,
+                                            ""
+                                        );
+                            }
+
+                            div.textContent =
+                                numero;
+
+                            div.addEventListener(
+                                "click",
+                                () => {
+                                    alternarFigurinha(
+                                        figurinha.codigo
+                                    );
+                                }
+                            );
+
+                            grade.appendChild(
+                                div
+                            );
+                        });
+
+                    container.appendChild(
+                        grade
+                    );
+                }
+            });
         });
 }
 
