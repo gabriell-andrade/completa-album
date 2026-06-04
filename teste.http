@@ -1,0 +1,13 @@
+GET http://localhost:8080/figurinhas
+
+###
+
+GET http://localhost:8080/figurinhas/obtidas
+
+###
+
+GET http://localhost:8080/figurinhas/faltantes
+
+###
+
+PATCH http://localhost:8080/figurinhas/BRA1

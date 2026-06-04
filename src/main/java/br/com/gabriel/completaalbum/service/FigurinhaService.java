@@ -16,7 +16,7 @@ public class FigurinhaService {
     }
 
     public List<Figurinha> listarTodas() {
-        return repository.findAll();
+        return repository.findAllByOrderByOrdemAsc();
     }
 
     public List<Figurinha> listarObtidas() {
@@ -25,5 +25,18 @@ public class FigurinhaService {
 
     public List<Figurinha> listarFaltantes() {
         return repository.findByObtida(false);
+    }
+
+    public Figurinha alternarObtida(String codigo) {
+
+        Figurinha figurinha = repository.findById(codigo)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Figurinha não encontrada: " + codigo
+                        ));
+
+        figurinha.setObtida(!figurinha.getObtida());
+
+        return repository.save(figurinha);
     }
 }

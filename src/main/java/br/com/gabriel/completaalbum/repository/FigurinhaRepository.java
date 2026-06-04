@@ -10,4 +10,5 @@ public interface FigurinhaRepository
 
     List<Figurinha> findByObtida(Boolean obtida);
 
+    List<Figurinha> findAllByOrderByOrdemAsc();
 }

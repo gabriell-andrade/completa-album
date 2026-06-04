@@ -4,6 +4,8 @@ import br.com.gabriel.completaalbum.entity.Figurinha;
 import br.com.gabriel.completaalbum.service.FigurinhaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -29,5 +31,12 @@ public class FigurinhaController {
     @GetMapping("/figurinhas/faltantes")
     public List<Figurinha> listarFaltantes() {
         return service.listarFaltantes();
+    }
+
+    @PatchMapping("/figurinhas/{codigo}")
+    public Figurinha alternarObtida(
+            @PathVariable String codigo
+    ) {
+        return service.alternarObtida(codigo);
     }
 }
