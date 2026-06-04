@@ -1,3 +1,5 @@
+let entidadeSelecionada = null;
+
 let secoesAbertas =
     JSON.parse(
         localStorage.getItem(
@@ -55,6 +57,15 @@ const bandeiras = {
     "Croacia": "🇭🇷",
     "Gana": "🇬🇭",
     "Panama": "🇵🇦"
+};
+
+const emojisEntidades = {
+
+    "PANINI": "🏆",
+
+    "FIFA": "⚽",
+
+    "Coca_Cola": "🥤"
 };
 
 let todasFigurinhas = [];
@@ -117,6 +128,55 @@ function renderizarFigurinhas() {
 
     container.innerHTML = "";
 
+    const entidades = [
+        "PANINI",
+        "FIFA",
+        "Coca_Cola"
+    ];
+
+    const entidadesDiv =
+        document.createElement("div");
+
+    const tituloEntidades =
+        document.createElement("h2");
+
+    tituloEntidades.className =
+        "titulo-grupo";
+
+    tituloEntidades.textContent =
+        "📦 Entidades";
+
+    container.appendChild(
+        tituloEntidades
+    );
+
+    entidadesDiv.className =
+        "entidades-grid";
+
+    container.appendChild(
+        entidadesDiv
+    );
+
+    const entidadesConteudo =
+        document.createElement("div");
+
+    entidadesConteudo.id =
+        "entidades-conteudo";
+
+    const tituloEntidadeSelecionada =
+        document.createElement("div");
+
+    tituloEntidadeSelecionada.id =
+        "titulo-entidade-selecionada";
+
+    container.appendChild(
+        tituloEntidadeSelecionada
+    );
+
+    container.appendChild(
+        entidadesConteudo
+    );
+
     const secoes = {};
 
     todasFigurinhas
@@ -165,13 +225,26 @@ function renderizarFigurinhas() {
                 ].push(figurinha);
         });
 
-    Object.keys(secoes)
-        .forEach(secao => {
+    const secoesOrdenadas = [
+        ...entidades.filter(
+            entidade => secoes[entidade]
+        ),
+        ...Object.keys(secoes)
+            .filter(
+                secao =>
+                    !entidades.includes(secao)
+            )
+    ];
+
+    secoesOrdenadas.forEach(secao => {
 
             const secaoDiv =
                 document.createElement(
                     "div"
                 );
+
+        const ehEntidade =
+            entidades.includes(secao);
 
             secaoDiv.className =
                 "secao";
@@ -333,9 +406,73 @@ function renderizarFigurinhas() {
                 grade
             );
 
+        if (ehEntidade) {
+
+            secaoDiv.className =
+                "card-entidade";
+
+            grade.style.display =
+                "flex";
+
+            const emoji =
+                emojisEntidades[secao] || "";
+
+            titulo.textContent =
+                `${emoji} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
+
+            if (
+                entidadeSelecionada === secao
+            ) {
+
+                secaoDiv.classList.add(
+                    "ativa"
+                );
+            }
+
+            secaoDiv.innerHTML = "";
+
+            secaoDiv.appendChild(
+                titulo
+            );
+
+            secaoDiv.addEventListener(
+                "click",
+                () => {
+
+                    entidadeSelecionada =
+                        entidadeSelecionada === secao
+                            ? null
+                            : secao;
+
+                    renderizarFigurinhas();
+                }
+            );
+
+            entidadesDiv.appendChild(
+                secaoDiv
+            );
+
+            if (
+                entidadeSelecionada === secao
+            ) {
+
+                document.getElementById(
+                    "titulo-entidade-selecionada"
+                ).textContent =
+                    `📂 ${secao.replaceAll("_", " ")}`;
+
+                entidadesConteudo
+                    .appendChild(
+                        grade
+                    );
+            }
+
+        } else {
+
             container.appendChild(
                 secaoDiv
             );
+        }
         });
 }
 
