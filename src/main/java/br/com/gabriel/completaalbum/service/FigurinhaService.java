@@ -58,4 +58,12 @@ public class FigurinhaService {
                 percentual
         );
     }
+
+    public Figurinha buscarPorCodigo(String codigo) {
+
+        return repository.findById(codigo)
+                .orElseThrow(() -> new RuntimeException(
+                        "Figurinha não encontrada: " + codigo
+                ));
+    }
 }

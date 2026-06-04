@@ -45,4 +45,11 @@ public class FigurinhaController {
     public ProgressoResponse obterProgresso() {
         return service.obterProgresso();
     }
+
+    @GetMapping("/figurinhas/{codigo}")
+    public Figurinha buscarPorCodigo(
+            @PathVariable String codigo
+    ) {
+        return service.buscarPorCodigo(codigo);
+    }
 }

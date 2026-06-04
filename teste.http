@@ -11,3 +11,19 @@ GET http://localhost:8080/figurinhas/faltantes
 ###
 
 PATCH http://localhost:8080/figurinhas/BRA1
+
+###
+
+GET http://localhost:8080/figurinhas/BRA1
+
+###
+
+GET http://localhost:8080/figurinhas/FWC10
+
+###
+
+GET http://localhost:8080/figurinhas/CC14
+
+###
+
+GET http://localhost:8080/figurinhas/XYZ999
