@@ -242,20 +242,22 @@ function renderizarFigurinhas() {
         );
 
     if (
-        buscaEhEntidade &&
-        entidadesFiltradas.length === 1
+        busca
     ) {
 
-        entidadeSelecionada =
-            entidadesFiltradas[0];
+        if (
+            buscaEhEntidade &&
+            entidadesFiltradas.length === 1
+        ) {
 
-    } else if (
-        busca &&
-        entidadeSelecionada
-    ) {
+            entidadeSelecionada =
+                entidadesFiltradas[0];
 
-        entidadeSelecionada =
-            null;
+        } else if (busca) {
+
+            entidadeSelecionada =
+                null;
+        }
     }
 
     const entidadesDiv =
@@ -625,12 +627,21 @@ function renderizarFigurinhas() {
                 );
 
             if (
-                busca &&
-                paisesFiltrados.length === 1
+                busca
             ) {
 
-                paisSelecionado =
-                    paisesFiltrados[0];
+                if (
+                    paisesFiltrados.length === 1
+                ) {
+
+                    paisSelecionado =
+                        paisesFiltrados[0];
+
+                } else {
+
+                    paisSelecionado =
+                        null;
+                }
             }
 
             if (
@@ -807,7 +818,25 @@ document
     .getElementById("busca")
     .addEventListener(
         "input",
-        renderizarFigurinhas
+        () => {
+
+            const busca =
+                document.getElementById(
+                    "busca"
+                ).value
+                    .trim();
+
+            if (!busca) {
+
+                entidadeSelecionada =
+                    null;
+
+                paisSelecionado =
+                    null;
+            }
+
+            renderizarFigurinhas();
+        }
     );
 
 carregarProgresso();
