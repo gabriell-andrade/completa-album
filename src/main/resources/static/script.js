@@ -201,113 +201,82 @@ async function carregarFigurinhas() {
     renderizarFigurinhas();
 }
 
-function renderizarFigurinhas() {
+function criarCardFigurinha(
+    figurinha
+) {
 
-    const container =
-        document.getElementById(
-            "figurinhas"
+    const div =
+        document.createElement(
+            "div"
         );
 
-    const busca =
-        document.getElementById(
-            "busca"
-        ).value
-            .trim()
-            .toLowerCase();
+    div.className =
+        figurinha.obtida
+            ? "figurinha obtida"
+            : "figurinha faltante";
 
-    container.innerHTML = "";
-
-    const entidades = [
-        "PANINI",
-        "FIFA",
-        "Coca_Cola"
-    ];
-
-    const buscaEhEntidade =
-        entidades.some(
-            entidade =>
-                entidade
-                    .toLowerCase()
-                    .replaceAll("_", " ")
-                    .includes(busca)
-        );
-
-    const entidadesFiltradas =
-        entidades.filter(
-            entidade =>
-                entidade
-                    .toLowerCase()
-                    .replaceAll("_", " ")
-                    .includes(busca)
-        );
+    let numero =
+        figurinha.codigo;
 
     if (
-        busca
+        figurinha.codigo !== "00"
     ) {
 
-        if (
-            buscaEhEntidade &&
-            entidadesFiltradas.length === 1
-        ) {
+        numero =
+            figurinha.codigo
+                .replace(
+                    /^[A-Z]+/,
+                    ""
+                );
+    }
 
-            entidadeSelecionada =
-                entidadesFiltradas[0];
+    div.textContent =
+        numero;
 
-        } else if (busca) {
-
-            entidadeSelecionada =
-                null;
+    div.addEventListener(
+        "click",
+        () => {
+            alternarFigurinha(
+                figurinha.codigo
+            );
         }
-    }
-
-    const entidadesDiv =
-        document.createElement("div");
-
-    if (
-        !busca ||
-        buscaEhEntidade
-    ) {
-
-        const tituloEntidades =
-            document.createElement("h2");
-
-        tituloEntidades.className =
-            "titulo-grupo";
-
-        tituloEntidades.textContent =
-            "📦 Entidades";
-
-        container.appendChild(
-            tituloEntidades
-        );
-
-        entidadesDiv.className =
-            "entidades-grid";
-
-        container.appendChild(
-            entidadesDiv
-        );
-    }
-
-    const entidadesConteudo =
-        document.createElement("div");
-
-    entidadesConteudo.id =
-        "entidades-conteudo";
-
-    const tituloEntidadeSelecionada =
-        document.createElement("div");
-
-    tituloEntidadeSelecionada.id =
-        "titulo-entidade-selecionada";
-
-    container.appendChild(
-        tituloEntidadeSelecionada
     );
 
-    container.appendChild(
-        entidadesConteudo
+    return div;
+}
+
+function criarGradeFigurinhas(
+    figurinhas
+) {
+
+    const grade =
+        document.createElement(
+            "div"
+        );
+
+    grade.className =
+        "grade";
+
+    grade.style.marginTop =
+        "10px";
+
+    figurinhas.forEach(
+        figurinha => {
+
+            grade.appendChild(
+                criarCardFigurinha(
+                    figurinha
+                )
+            );
+        }
     );
+
+    return grade;
+}
+
+function obterSecoesFiltradas(
+    busca
+) {
 
     const secoes = {};
 
@@ -343,9 +312,11 @@ function renderizarFigurinhas() {
         })
         .forEach(figurinha => {
 
-            if (!secoes[
-                figurinha.secao
-                ]) {
+            if (
+                !secoes[
+                    figurinha.secao
+                    ]
+            ) {
 
                 secoes[
                     figurinha.secao
@@ -354,269 +325,19 @@ function renderizarFigurinhas() {
 
             secoes[
                 figurinha.secao
-                ].push(figurinha);
+                ].push(
+                figurinha
+            );
         });
 
-    const secoesNormais =
-        Object.keys(secoes)
-            .filter(
-                secao =>
-                    !entidades.includes(secao)
-            );
+    return secoes;
+}
 
-    const secoesOrdenadas = [
-        ...entidades.filter(
-            entidade => secoes[entidade]
-        ),
-        ...Object.keys(secoes)
-            .filter(
-                secao =>
-                    !entidades.includes(secao)
-            )
-    ];
-
-    secoesOrdenadas.forEach(secao => {
-
-            const secaoDiv =
-                document.createElement(
-                    "div"
-                );
-
-        const ehEntidade =
-            entidades.includes(secao);
-
-            secaoDiv.className =
-                "secao";
-
-            const totalSecao =
-                secoes[secao].length;
-
-            const obtidasSecao =
-                secoes[secao].filter(
-                    figurinha =>
-                        figurinha.obtida
-                ).length;
-
-            const percentual =
-                Math.round(
-                    (obtidasSecao * 100)
-                    / totalSecao
-                );
-
-            const titulo =
-                document.createElement(
-                    "h2"
-                );
-
-            titulo.className =
-                "titulo-secao";
-
-            const bandeira =
-                bandeiras[secao] || "🏳️";
-
-            titulo.textContent =
-                `▼ ${bandeira} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
-
-            secaoDiv.appendChild(
-                titulo
-            );
-
-            const grade =
-                document.createElement(
-                    "div"
-                );
-
-            grade.className =
-                "grade";
-
-            const aberta =
-                busca ||
-                secoesAbertas.includes(
-                    secao
-                );
-
-            grade.style.display =
-                aberta
-                    ? "flex"
-                    : "none";
-
-            titulo.textContent =
-                aberta
-                    ? `▼ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`
-                    : `▶ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
-
-            titulo.addEventListener(
-                "click",
-                () => {
-
-                    const estaAberta =
-                        grade.style.display
-                        === "flex";
-
-                    if (estaAberta) {
-
-                        grade.style.display =
-                            "none";
-
-                        secoesAbertas =
-                            secoesAbertas.filter(
-                                s => s !== secao
-                            );
-
-                        titulo.textContent =
-                            `▶ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
-
-                    } else {
-
-                        grade.style.display =
-                            "flex";
-
-                        if (
-                            !secoesAbertas.includes(
-                                secao
-                            )
-                        ) {
-
-                            secoesAbertas.push(
-                                secao
-                            );
-                        }
-
-                        titulo.textContent =
-                            `▼ ${bandeira} ${secao} (${obtidasSecao}/${totalSecao})`;
-                    }
-
-                    localStorage.setItem(
-                        "secoesAbertas",
-                        JSON.stringify(
-                            secoesAbertas
-                        )
-                    );
-                }
-            );
-
-            secoes[secao]
-                .forEach(figurinha => {
-
-                    const div =
-                        document.createElement(
-                            "div"
-                        );
-
-                    div.className =
-                        figurinha.obtida
-                            ? "figurinha obtida"
-                            : "figurinha faltante";
-
-                    let numero =
-                        figurinha.codigo;
-
-                    if (
-                        figurinha.codigo
-                        !== "00"
-                    ) {
-
-                        numero =
-                            figurinha.codigo
-                                .replace(
-                                    /^[A-Z]+/,
-                                    ""
-                                );
-                    }
-
-                    div.textContent =
-                        numero;
-
-                    div.addEventListener(
-                        "click",
-                        () => {
-                            alternarFigurinha(
-                                figurinha.codigo
-                            );
-                        }
-                    );
-
-                    grade.appendChild(
-                        div
-                    );
-                });
-
-            secaoDiv.appendChild(
-                grade
-            );
-
-        if (ehEntidade) {
-
-            secaoDiv.className =
-                "card-entidade";
-
-            grade.style.display =
-                "flex";
-
-            const emoji =
-                emojisEntidades[secao] || "";
-
-            titulo.textContent =
-                `${emoji} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
-
-            if (
-                entidadeSelecionada === secao
-            ) {
-
-                secaoDiv.classList.add(
-                    "ativa"
-                );
-            }
-
-            secaoDiv.innerHTML = "";
-
-            secaoDiv.appendChild(
-                titulo
-            );
-
-            secaoDiv.addEventListener(
-                "click",
-                () => {
-
-                    entidadeSelecionada =
-                        entidadeSelecionada === secao
-                            ? null
-                            : secao;
-
-                    renderizarFigurinhas();
-                }
-            );
-
-            if (
-                !busca ||
-                buscaEhEntidade
-            ) {
-
-                entidadesDiv.appendChild(
-                    secaoDiv
-                );
-            }
-
-            if (
-                entidadeSelecionada === secao
-            ) {
-
-                document.getElementById(
-                    "titulo-entidade-selecionada"
-                ).textContent =
-                    `📂 ${secao.replaceAll("_", " ")}`;
-
-                entidadesConteudo
-                    .appendChild(
-                        grade
-                    );
-            }
-
-        } else {
-
-            return;
-        }
-    });
+function renderizarGrupos(
+    container,
+    secoes,
+    busca
+) {
 
     Object.entries(grupos)
         .forEach(([nomeGrupo, paises]) => {
@@ -750,61 +471,9 @@ function renderizarFigurinhas() {
                     );
 
                     const grade =
-                        document.createElement(
-                            "div"
+                        criarGradeFigurinhas(
+                            secoes[pais]
                         );
-
-                    grade.className =
-                        "grade";
-
-                    grade.style.marginTop =
-                        "10px";
-
-                    secoes[pais]
-                        .forEach(figurinha => {
-
-                            const div =
-                                document.createElement(
-                                    "div"
-                                );
-
-                            div.className =
-                                figurinha.obtida
-                                    ? "figurinha obtida"
-                                    : "figurinha faltante";
-
-                            let numero =
-                                figurinha.codigo;
-
-                            if (
-                                figurinha.codigo
-                                !== "00"
-                            ) {
-
-                                numero =
-                                    figurinha.codigo
-                                        .replace(
-                                            /^[A-Z]+/,
-                                            ""
-                                        );
-                            }
-
-                            div.textContent =
-                                numero;
-
-                            div.addEventListener(
-                                "click",
-                                () => {
-                                    alternarFigurinha(
-                                        figurinha.codigo
-                                    );
-                                }
-                            );
-
-                            grade.appendChild(
-                                div
-                            );
-                        });
 
                     container.appendChild(
                         grade
@@ -812,6 +481,230 @@ function renderizarFigurinhas() {
                 }
             });
         });
+}
+
+function renderizarEntidades(
+    container,
+    secoes,
+    busca
+) {
+
+    const entidades = [
+        "PANINI",
+        "FIFA",
+        "Coca_Cola"
+    ];
+
+    const buscaEhEntidade =
+        entidades.some(
+            entidade =>
+                entidade
+                    .toLowerCase()
+                    .replaceAll("_", " ")
+                    .includes(busca)
+        );
+
+    const entidadesFiltradas =
+        entidades.filter(
+            entidade =>
+                entidade
+                    .toLowerCase()
+                    .replaceAll("_", " ")
+                    .includes(busca)
+        );
+
+    if (busca) {
+
+        if (
+            buscaEhEntidade &&
+            entidadesFiltradas.length === 1
+        ) {
+
+            entidadeSelecionada =
+                entidadesFiltradas[0];
+
+        } else {
+
+            entidadeSelecionada =
+                null;
+        }
+    }
+
+    const entidadesDiv =
+        document.createElement("div");
+
+    if (
+        !busca ||
+        buscaEhEntidade
+    ) {
+
+        const tituloEntidades =
+            document.createElement("h2");
+
+        tituloEntidades.className =
+            "titulo-grupo";
+
+        tituloEntidades.textContent =
+            "📦 Entidades";
+
+        container.appendChild(
+            tituloEntidades
+        );
+
+        entidadesDiv.className =
+            "entidades-grid";
+
+        container.appendChild(
+            entidadesDiv
+        );
+    }
+
+    const entidadesConteudo =
+        document.createElement("div");
+
+    entidadesConteudo.id =
+        "entidades-conteudo";
+
+    const tituloEntidadeSelecionada =
+        document.createElement("div");
+
+    tituloEntidadeSelecionada.id =
+        "titulo-entidade-selecionada";
+
+    container.appendChild(
+        tituloEntidadeSelecionada
+    );
+
+    container.appendChild(
+        entidadesConteudo
+    );
+
+    const secoesOrdenadas = [
+        ...entidades.filter(
+            entidade => secoes[entidade]
+        )
+    ];
+
+    secoesOrdenadas.forEach(secao => {
+
+        const totalSecao =
+            secoes[secao].length;
+
+        const obtidasSecao =
+            secoes[secao].filter(
+                figurinha =>
+                    figurinha.obtida
+            ).length;
+
+        const titulo =
+            document.createElement(
+                "h2"
+            );
+
+        titulo.className =
+            "titulo-secao";
+
+        const emoji =
+            emojisEntidades[secao] || "";
+
+        titulo.textContent =
+            `${emoji} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
+
+        const secaoDiv =
+            document.createElement(
+                "div"
+            );
+
+        secaoDiv.className =
+            "card-entidade";
+
+        if (
+            entidadeSelecionada === secao
+        ) {
+
+            secaoDiv.classList.add(
+                "ativa"
+            );
+        }
+
+        secaoDiv.appendChild(
+            titulo
+        );
+
+        secaoDiv.addEventListener(
+            "click",
+            () => {
+
+                entidadeSelecionada =
+                    entidadeSelecionada === secao
+                        ? null
+                        : secao;
+
+                renderizarFigurinhas();
+            }
+        );
+
+        if (
+            !busca ||
+            buscaEhEntidade
+        ) {
+
+            entidadesDiv.appendChild(
+                secaoDiv
+            );
+        }
+
+        if (
+            entidadeSelecionada === secao
+        ) {
+
+            document.getElementById(
+                "titulo-entidade-selecionada"
+            ).textContent =
+                `📂 ${secao.replaceAll("_", " ")}`;
+
+            entidadesConteudo
+                .appendChild(
+                    criarGradeFigurinhas(
+                        secoes[secao]
+                    )
+                );
+        }
+    });
+}
+
+function renderizarFigurinhas() {
+
+    const container =
+        document.getElementById(
+            "figurinhas"
+        );
+
+    const busca =
+        document.getElementById(
+            "busca"
+        ).value
+            .trim()
+            .toLowerCase();
+
+    container.innerHTML = "";
+
+    const secoes =
+        obterSecoesFiltradas(
+            busca
+        );
+
+    renderizarEntidades(
+        container,
+        secoes,
+        busca
+    );
+
+    renderizarGrupos(
+        container,
+        secoes,
+        busca
+    );
 }
 
 document
