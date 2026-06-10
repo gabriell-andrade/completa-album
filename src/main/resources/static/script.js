@@ -608,7 +608,11 @@ function renderizarEntidades(
                     "titulo-pais-selecionado";
 
                 titulo.textContent =
-                    `📂 ${emojisEntidades[entidade]} ${entidade.replaceAll("_", " ")}`;
+                    `📂 ${emojisEntidades[entidade]} ${nomeExibicao(entidade)}${
+                        codigosEntidades[entidade]
+                            ? ` (${codigosEntidades[entidade]})`
+                            : ""
+                    }`;
 
                 container.appendChild(
                     titulo
@@ -800,7 +804,11 @@ function renderizarEntidades(
         ) {
 
             tituloEntidadeSelecionada.textContent =
-                `📂 ${nomeExibicao(secao)}`;
+                `📂 ${nomeExibicao(secao)}${
+                    codigosEntidades[secao]
+                        ? ` (${codigosEntidades[secao]})`
+                        : ""
+                }`;
 
             entidadesConteudo
                 .appendChild(
