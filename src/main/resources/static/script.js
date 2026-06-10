@@ -148,6 +148,38 @@ const bandeiras = {
     "Panama": "🇵🇦"
 };
 
+const nomesExibicao = {
+
+    "Africa_do_Sul": "África do Sul",
+    "Coreia_do_Sul": "Coreia do Sul",
+    "Tchequia": "Tchéquia",
+    "Canada": "Canadá",
+    "Bosnia": "Bósnia e Herzegovina",
+    "Suica": "Suíça",
+    "Escocia": "Escócia",
+    "Australia": "Austrália",
+    "Curacao": "Curaçao",
+    "Japao": "Japão",
+    "Suecia": "Suécia",
+    "Tunisia": "Tunísia",
+    "Belgica": "Bélgica",
+    "Ira": "Irã",
+    "Arabia_Saudita": "Arábia Saudita",
+    "Costa_do_Marfim": "Costa do Marfim",
+    "Nova_Zelandia": "Nova Zelândia",
+    "Franca": "França",
+    "Argelia": "Argélia",
+    "Austria": "Áustria",
+    "Jordania": "Jordânia",
+    "Uzbequistao": "Uzbequistão",
+    "Colombia" : "Colômbia",
+    "Croacia" : "Croácia",
+    "Panama": "Panamá",
+    "Mexico": "México",
+    "Estados_Unidos": "Estados Unidos",
+    "Coca_Cola": "Coca-Cola"
+};
+
 const emojisEntidades = {
 
     "PANINI": "📖",
@@ -367,7 +399,7 @@ function renderizarGrupos(
                     "titulo-pais-selecionado";
 
                 titulo.textContent =
-                    `📂 ${bandeiras[secao] || "🏳️"} ${secao.replaceAll("_", " ")}`;
+                    `📂 ${bandeiras[secao] || "🏳️"} ${nomeExibicao(secao)}`;
 
                 container.appendChild(
                     titulo
@@ -480,7 +512,7 @@ function renderizarGrupos(
                 card.innerHTML = `
                     <div class="nome-pais">
                         ${bandeiras[pais] || "🏳️"}
-                        ${pais.replaceAll("_", " ")}
+                        ${nomeExibicao(pais)}
                     </div>
                 
                     <div class="progresso-pais">
@@ -516,7 +548,7 @@ function renderizarGrupos(
                         "titulo-pais-selecionado";
 
                     tituloPaisSelecionado.textContent =
-                        `📂 ${bandeiras[pais] || "🏳️"} ${pais.replaceAll("_", " ")}`;
+                        `📂 ${bandeiras[pais] || "🏳️"} ${nomeExibicao(pais)}`;
 
                     container.appendChild(
                         tituloPaisSelecionado
@@ -695,7 +727,7 @@ function renderizarEntidades(
 
         titulo.innerHTML = `
             <div class="nome-pais">
-                ${emoji} ${secao.replaceAll("_", " ")}
+                ${emoji} ${nomeExibicao(secao)}
             </div>
         
             <div class="progresso-pais">
@@ -757,7 +789,7 @@ function renderizarEntidades(
         ) {
 
             tituloEntidadeSelecionada.textContent =
-                `📂 ${secao.replaceAll("_", " ")}`;
+                `📂 ${nomeExibicao(secao)}`;
 
             entidadesConteudo
                 .appendChild(
@@ -778,6 +810,12 @@ function obterBusca() {
         .value
         .trim()
         .toLowerCase();
+}
+
+function nomeExibicao(nome) {
+
+    return nomesExibicao[nome]
+        || nome.replaceAll("_", " ");
 }
 
 function renderizarFigurinhas() {
