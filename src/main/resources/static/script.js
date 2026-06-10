@@ -804,7 +804,7 @@ function renderizarEntidades(
         ) {
 
             tituloEntidadeSelecionada.textContent =
-                `📂 ${nomeExibicao(secao)}${
+                `📂 ${emojisEntidades[secao]} ${nomeExibicao(secao)}${
                     codigosEntidades[secao]
                         ? ` (${codigosEntidades[secao]})`
                         : ""
