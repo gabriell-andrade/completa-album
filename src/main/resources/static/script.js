@@ -226,25 +226,28 @@ function renderizarFigurinhas() {
     const entidadesDiv =
         document.createElement("div");
 
-    const tituloEntidades =
-        document.createElement("h2");
+    if (!busca) {
 
-    tituloEntidades.className =
-        "titulo-grupo";
+        const tituloEntidades =
+            document.createElement("h2");
 
-    tituloEntidades.textContent =
-        "📦 Entidades";
+        tituloEntidades.className =
+            "titulo-grupo";
 
-    container.appendChild(
-        tituloEntidades
-    );
+        tituloEntidades.textContent =
+            "📦 Entidades";
 
-    entidadesDiv.className =
-        "entidades-grid";
+        container.appendChild(
+            tituloEntidades
+        );
 
-    container.appendChild(
-        entidadesDiv
-    );
+        entidadesDiv.className =
+            "entidades-grid";
+
+        container.appendChild(
+            entidadesDiv
+        );
+    }
 
     const entidadesConteudo =
         document.createElement("div");
@@ -544,9 +547,12 @@ function renderizarFigurinhas() {
                 }
             );
 
-            entidadesDiv.appendChild(
-                secaoDiv
-            );
+            if (!busca) {
+
+                entidadesDiv.appendChild(
+                    secaoDiv
+                );
+            }
 
             if (
                 entidadeSelecionada === secao
@@ -572,6 +578,26 @@ function renderizarFigurinhas() {
     Object.entries(grupos)
         .forEach(([nomeGrupo, paises]) => {
 
+            const paisesFiltrados =
+                paises.filter(
+                    pais => secoes[pais]
+                );
+
+            if (
+                busca &&
+                paisesFiltrados.length === 1
+            ) {
+
+                paisSelecionado =
+                    paisesFiltrados[0];
+            }
+
+            if (
+                paisesFiltrados.length === 0
+            ) {
+                return;
+            }
+
             const tituloGrupo =
                 document.createElement("h2");
 
@@ -595,7 +621,7 @@ function renderizarFigurinhas() {
                 grid
             );
 
-            paises.forEach(pais => {
+            paisesFiltrados.forEach(pais => {
 
                 if (!secoes[pais]) {
                     return;
