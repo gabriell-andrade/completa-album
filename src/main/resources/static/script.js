@@ -223,10 +223,48 @@ function renderizarFigurinhas() {
         "Coca_Cola"
     ];
 
+    const buscaEhEntidade =
+        entidades.some(
+            entidade =>
+                entidade
+                    .toLowerCase()
+                    .replaceAll("_", " ")
+                    .includes(busca)
+        );
+
+    const entidadesFiltradas =
+        entidades.filter(
+            entidade =>
+                entidade
+                    .toLowerCase()
+                    .replaceAll("_", " ")
+                    .includes(busca)
+        );
+
+    if (
+        buscaEhEntidade &&
+        entidadesFiltradas.length === 1
+    ) {
+
+        entidadeSelecionada =
+            entidadesFiltradas[0];
+
+    } else if (
+        busca &&
+        entidadeSelecionada
+    ) {
+
+        entidadeSelecionada =
+            null;
+    }
+
     const entidadesDiv =
         document.createElement("div");
 
-    if (!busca) {
+    if (
+        !busca ||
+        buscaEhEntidade
+    ) {
 
         const tituloEntidades =
             document.createElement("h2");
@@ -547,7 +585,10 @@ function renderizarFigurinhas() {
                 }
             );
 
-            if (!busca) {
+            if (
+                !busca ||
+                buscaEhEntidade
+            ) {
 
                 entidadesDiv.appendChild(
                     secaoDiv
