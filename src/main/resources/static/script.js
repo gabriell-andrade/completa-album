@@ -339,6 +339,49 @@ function renderizarGrupos(
     busca
 ) {
 
+    if (busca) {
+
+        Object.keys(secoes)
+            .forEach(secao => {
+
+                if (
+                    [
+                        "PANINI",
+                        "FIFA",
+                        "Coca_Cola"
+                    ].includes(secao)
+                ) {
+                    return;
+                }
+
+                const titulo =
+                    document.createElement(
+                        "div"
+                    );
+
+                titulo.className =
+                    "titulo-pais-selecionado";
+
+                titulo.textContent =
+                    `📂 ${bandeiras[secao] || "🏳️"} ${secao.replaceAll("_", " ")}`;
+
+                container.appendChild(
+                    titulo
+                );
+
+                const grade =
+                    criarGradeFigurinhas(
+                        secoes[secao]
+                    );
+
+                container.appendChild(
+                    grade
+                );
+            });
+
+        return;
+    }
+
     Object.entries(grupos)
         .forEach(([nomeGrupo, paises]) => {
 
@@ -408,6 +451,11 @@ function renderizarGrupos(
                         f => f.obtida
                     ).length;
 
+                const codigoPais =
+                    secoes[pais][0]
+                        .codigo
+                        .match(/^[A-Z]+/)[0];
+
                 const card =
                     document.createElement(
                         "div"
@@ -432,7 +480,7 @@ function renderizarGrupos(
                     </div>
                 
                     <div class="progresso-pais">
-                        ${obtidas}/${total}
+                        ${codigoPais} • ${obtidas}/${total}
                     </div>
                 `;
 
@@ -494,6 +542,40 @@ function renderizarEntidades(
         "FIFA",
         "Coca_Cola"
     ];
+
+    if (busca) {
+
+        entidades
+            .filter(
+                entidade =>
+                    secoes[entidade]
+            )
+            .forEach(entidade => {
+
+                const titulo =
+                    document.createElement(
+                        "div"
+                    );
+
+                titulo.className =
+                    "titulo-pais-selecionado";
+
+                titulo.textContent =
+                    `📂 ${emojisEntidades[entidade]} ${entidade.replaceAll("_", " ")}`;
+
+                container.appendChild(
+                    titulo
+                );
+
+                container.appendChild(
+                    criarGradeFigurinhas(
+                        secoes[entidade]
+                    )
+                );
+            });
+
+        return;
+    }
 
     const buscaEhEntidade =
         entidades.some(
