@@ -210,6 +210,7 @@ body {
 .progresso-pais {
     font-size: .95rem;
     color: #475569;
+    font-weight: 400;
 }
 
 .titulo-pais-selecionado {
@@ -270,6 +271,19 @@ body {
     background: #f9fafb;
     border: 2px solid #d1d5db;
     color: #374151;
+}
+
+.conteudo-entidade {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin: 0;
 }
 
 /* TABLET */

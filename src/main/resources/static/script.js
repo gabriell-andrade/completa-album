@@ -150,11 +150,15 @@ const bandeiras = {
 
 const emojisEntidades = {
 
-    "PANINI": "🏆",
-
+    "PANINI": "📖",
     "FIFA": "⚽",
-
     "Coca_Cola": "🥤"
+};
+
+const codigosEntidades = {
+    "PANINI": null,
+    "FIFA": "FWC",
+    "Coca_Cola": "CC"
 };
 
 let todasFigurinhas = [];
@@ -684,13 +688,25 @@ function renderizarEntidades(
             );
 
         titulo.className =
-            "titulo-secao";
+            "conteudo-entidade";
 
         const emoji =
             emojisEntidades[secao] || "";
 
-        titulo.textContent =
-            `${emoji} ${secao.replaceAll("_", " ")} (${obtidasSecao}/${totalSecao})`;
+        titulo.innerHTML = `
+            <div class="nome-pais">
+                ${emoji} ${secao.replaceAll("_", " ")}
+            </div>
+        
+            <div class="progresso-pais">
+                ${
+                    codigosEntidades[secao]
+                        ? `${codigosEntidades[secao]} • `
+                        : ""
+                }
+                ${obtidasSecao}/${totalSecao}
+            </div>
+        `;
 
         const secaoDiv =
             document.createElement(
