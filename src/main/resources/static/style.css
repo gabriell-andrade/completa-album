@@ -100,8 +100,24 @@ body {
 }
 
 .grupo-titulo {
+
     margin-top: 24px;
+    margin-bottom: 16px;
+    position: relative;
 }
+
+.grupo-titulo::after {
+
+    content: "";
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: #22c55e;
+}
+
+
 
 /* SEÇÕES ANTIGAS */
 
