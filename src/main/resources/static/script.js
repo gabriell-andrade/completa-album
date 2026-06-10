@@ -658,9 +658,7 @@ function renderizarEntidades(
             entidadeSelecionada === secao
         ) {
 
-            document.getElementById(
-                "titulo-entidade-selecionada"
-            ).textContent =
+            tituloEntidadeSelecionada.textContent =
                 `📂 ${secao.replaceAll("_", " ")}`;
 
             entidadesConteudo
@@ -673,6 +671,17 @@ function renderizarEntidades(
     });
 }
 
+function obterBusca() {
+
+    return document
+        .getElementById(
+            "busca"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+}
+
 function renderizarFigurinhas() {
 
     const container =
@@ -681,11 +690,7 @@ function renderizarFigurinhas() {
         );
 
     const busca =
-        document.getElementById(
-            "busca"
-        ).value
-            .trim()
-            .toLowerCase();
+        obterBusca();
 
     container.innerHTML = "";
 
