@@ -329,6 +329,11 @@ function obterSecoesFiltradas(
             const secao =
                 figurinha.secao.toLowerCase();
 
+            const prefixoCodigo =
+                figurinha.codigo
+                    .match(/^[A-Z]+/)?.[0]
+                    ?.toLowerCase() || "";
+
             if (codigo === busca) {
                 return true;
             }
@@ -338,13 +343,14 @@ function obterSecoesFiltradas(
             }
 
             if (
-                busca.length <= 2 &&
-                codigo.includes(busca)
+                prefixoCodigo.includes(busca)
             ) {
                 return true;
             }
 
-            return false;
+            return busca.length <= 2 &&
+                codigo.includes(busca);
+
         })
         .forEach(figurinha => {
 
@@ -398,8 +404,13 @@ function renderizarGrupos(
                 titulo.className =
                     "titulo-pais-selecionado";
 
+                const codigoPais =
+                    secoes[secao][0]
+                        .codigo
+                        .match(/^[A-Z]+/)[0];
+
                 titulo.textContent =
-                    `📂 ${bandeiras[secao] || "🏳️"} ${nomeExibicao(secao)}`;
+                    `📂 ${bandeiras[secao] || "🏳️"} ${nomeExibicao(secao)} (${codigoPais})`;
 
                 container.appendChild(
                     titulo
@@ -548,7 +559,7 @@ function renderizarGrupos(
                         "titulo-pais-selecionado";
 
                     tituloPaisSelecionado.textContent =
-                        `📂 ${bandeiras[pais] || "🏳️"} ${nomeExibicao(pais)}`;
+                        `📂 ${bandeiras[pais] || "🏳️"} ${nomeExibicao(pais)} (${codigoPais})`;
 
                     container.appendChild(
                         tituloPaisSelecionado
