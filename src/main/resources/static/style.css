@@ -253,13 +253,41 @@ body {
     display: block;
 }
 
+.filtro-faltantes {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px 2px;
+    color: var(--muted);
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.filtro-faltantes input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--red);
+}
+
 .navegacao-grupos {
     display: none;
+    flex-wrap: wrap;
     gap: 8px;
     overflow-x: auto;
     padding: 2px 0 8px;
     margin-bottom: 8px;
     scrollbar-width: thin;
+}
+
+.navegacao-grupos-label {
+    flex: 0 0 100%;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
 }
 
 .navegacao-grupos.visivel {

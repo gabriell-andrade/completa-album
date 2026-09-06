@@ -260,6 +260,11 @@ function renderizarNavegacaoGrupos(secoes, busca) {
         return;
     }
 
+    const titulo = document.createElement("span");
+    titulo.className = "navegacao-grupos-label";
+    titulo.textContent = "Navegar por grupo";
+    navegacao.appendChild(titulo);
+
     Object.entries(grupos).forEach(([nomeGrupo, paises]) => {
 
         if (!paises.some(pais => secoes[pais])) {
@@ -365,6 +370,13 @@ function obterSecoesFiltradas(
 
     todasFigurinhas
         .filter(figurinha => {
+
+            if (
+                document.getElementById("somente-faltantes").checked &&
+                figurinha.obtida
+            ) {
+                return false;
+            }
 
             if (!busca) {
                 return true;
@@ -969,6 +981,13 @@ limparBuscaBotao.addEventListener(
         buscaInput.focus();
     }
 );
+
+document
+    .getElementById("somente-faltantes")
+    .addEventListener(
+        "change",
+        () => renderizarFigurinhas()
+    );
 
 atualizarEstadoBusca();
 carregarProgresso();
