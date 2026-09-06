@@ -187,6 +187,9 @@ const codigosEntidades = {
 };
 
 let todasFigurinhas = [];
+let sincronizacaoEmAndamento = false;
+
+const INTERVALO_SINCRONIZACAO_MS = 15000;
 
 function formatarPercentual(percentual) {
 
@@ -248,6 +251,27 @@ async function carregarFigurinhas() {
 
     atualizarResumoAlbum();
     renderizarFigurinhas();
+}
+
+async function sincronizarDados() {
+
+    if (
+        sincronizacaoEmAndamento ||
+        document.visibilityState !== "visible"
+    ) {
+        return;
+    }
+
+    sincronizacaoEmAndamento = true;
+
+    try {
+        await carregarProgresso();
+        await carregarFigurinhas();
+    } catch (erro) {
+        console.error("Não foi possível sincronizar o álbum.", erro);
+    } finally {
+        sincronizacaoEmAndamento = false;
+    }
 }
 
 function renderizarNavegacaoGrupos(secoes, busca) {
@@ -989,6 +1013,19 @@ document
         () => renderizarFigurinhas()
     );
 
+document.addEventListener(
+    "visibilitychange",
+    () => {
+        if (document.visibilityState === "visible") {
+            sincronizarDados();
+        }
+    }
+);
+
+setInterval(
+    sincronizarDados,
+    INTERVALO_SINCRONIZACAO_MS
+);
+
 atualizarEstadoBusca();
-carregarProgresso();
-carregarFigurinhas();
+sincronizarDados();
