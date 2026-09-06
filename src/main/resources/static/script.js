@@ -248,6 +248,40 @@ async function carregarFigurinhas() {
     renderizarFigurinhas();
 }
 
+function renderizarNavegacaoGrupos(secoes, busca) {
+
+    const navegacao = document.getElementById("navegacao-grupos");
+    navegacao.innerHTML = "";
+    navegacao.classList.toggle("visivel", !busca);
+
+    if (busca) {
+        return;
+    }
+
+    Object.entries(grupos).forEach(([nomeGrupo, paises]) => {
+
+        if (!paises.some(pais => secoes[pais])) {
+            return;
+        }
+
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "atalho-grupo";
+        botao.textContent = nomeGrupo.replace("Grupo ", "");
+        botao.setAttribute("aria-label", `Ir para ${nomeGrupo}`);
+
+        botao.addEventListener("click", () => {
+            const grupo = document.getElementById(`grupo-${nomeGrupo.replace(" ", "-")}`);
+
+            if (grupo) {
+                grupo.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+
+        navegacao.appendChild(botao);
+    });
+}
+
 function criarCardFigurinha(
     figurinha
 ) {
@@ -477,6 +511,8 @@ function renderizarGrupos(
 
             tituloGrupo.className =
                 "grupo-titulo";
+            tituloGrupo.id =
+                `grupo-${nomeGrupo.replace(" ", "-")}`;
 
             tituloGrupo.innerHTML = `
                 <span class="grupo-titulo-text">🏆 ${nomeGrupo}</span>
@@ -869,9 +905,12 @@ function renderizarFigurinhas() {
     const totalDeSecoes = Object.keys(secoes).length;
 
     if (totalDeSecoes === 0) {
+        renderizarNavegacaoGrupos({}, busca);
         container.innerHTML = '<div class="empty-state">Nenhum resultado encontrado para sua busca.</div>';
         return;
     }
+
+    renderizarNavegacaoGrupos(secoes, busca);
 
     renderizarEntidades(
         container,

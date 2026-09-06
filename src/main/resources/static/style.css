@@ -166,6 +166,40 @@ body {
     display: block;
 }
 
+.navegacao-grupos {
+    display: none;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 0 8px;
+    margin-bottom: 8px;
+    scrollbar-width: thin;
+}
+
+.navegacao-grupos.visivel {
+    display: flex;
+}
+
+.atalho-grupo {
+    flex: 0 0 auto;
+    min-width: 42px;
+    padding: 8px 12px;
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-radius: 999px;
+    background: #f0fdf4;
+    color: #166534;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.atalho-grupo:hover,
+.atalho-grupo:focus-visible {
+    background: #22c55e;
+    color: #ffffff;
+    transform: translateY(-1px);
+    outline: none;
+}
+
 /* TÍTULOS */
 
 .titulo-grupo,
@@ -180,6 +214,7 @@ body {
     margin-top: 24px;
     margin-bottom: 16px;
     position: relative;
+    scroll-margin-top: 104px;
     padding: 4px 0;
 }
 
