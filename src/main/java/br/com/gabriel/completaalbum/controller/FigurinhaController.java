@@ -55,6 +55,22 @@ public class FigurinhaController {
     }
 
     @Operation(
+            summary = "Marca todas as figurinhas como obtidas"
+    )
+    @PatchMapping("/figurinhas/marcar-todas")
+    public List<Figurinha> marcarTudoComoObtido() {
+        return service.marcarTudoComoObtido();
+    }
+
+    @Operation(
+            summary = "Reseta todas as figurinhas do álbum"
+    )
+    @PatchMapping("/figurinhas/resetar")
+    public List<Figurinha> resetarAlbum() {
+        return service.resetarAlbum();
+    }
+
+    @Operation(
             summary = "Mostra o progresso do álbum"
     )
     @GetMapping("/figurinhas/progresso")

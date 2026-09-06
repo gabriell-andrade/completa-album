@@ -2,13 +2,6 @@ let entidadeSelecionada = null;
 
 let paisSelecionado = null;
 
-let secoesAbertas =
-    JSON.parse(
-        localStorage.getItem(
-            "secoesAbertas"
-        ) || "[]"
-    );
-
 const grupos = {
 
     "Grupo A": [
@@ -195,6 +188,19 @@ const codigosEntidades = {
 
 let todasFigurinhas = [];
 
+function atualizarResumoAlbum() {
+
+    const total = todasFigurinhas.length;
+    const obtidas = todasFigurinhas.filter(figurinha => figurinha.obtida).length;
+    const faltantes = total - obtidas;
+    const percentual = total > 0 ? (obtidas * 100) / total : 0;
+
+    document.getElementById("total-figurinhas").textContent = total;
+    document.getElementById("obtidas-figurinhas").textContent = obtidas;
+    document.getElementById("faltantes-figurinhas").textContent = faltantes;
+    document.getElementById("percentual-figurinhas").textContent = `${percentual.toFixed(0)}%`;
+}
+
 async function carregarProgresso() {
 
     const response =
@@ -210,6 +216,10 @@ async function carregarProgresso() {
         "barra-progresso"
     ).style.width =
         `${progresso.percentual}%`;
+
+    if (todasFigurinhas.length > 0) {
+        atualizarResumoAlbum();
+    }
 }
 
 async function alternarFigurinha(codigo) {
@@ -234,6 +244,7 @@ async function carregarFigurinhas() {
     todasFigurinhas =
         await response.json();
 
+    atualizarResumoAlbum();
     renderizarFigurinhas();
 }
 
@@ -462,13 +473,14 @@ function renderizarGrupos(
             }
 
             const tituloGrupo =
-                document.createElement("h2");
+                document.createElement("div");
 
             tituloGrupo.className =
                 "grupo-titulo";
 
-            tituloGrupo.textContent =
-                `🏆 ${nomeGrupo}`;
+            tituloGrupo.innerHTML = `
+                <span class="grupo-titulo-text">🏆 ${nomeGrupo}</span>
+            `;
 
             container.appendChild(
                 tituloGrupo
@@ -854,6 +866,13 @@ function renderizarFigurinhas() {
             busca
         );
 
+    const totalDeSecoes = Object.keys(secoes).length;
+
+    if (totalDeSecoes === 0) {
+        container.innerHTML = '<div class="empty-state">Nenhum resultado encontrado para sua busca.</div>';
+        return;
+    }
+
     renderizarEntidades(
         container,
         secoes,
@@ -867,30 +886,49 @@ function renderizarFigurinhas() {
     );
 }
 
-document
-    .getElementById("busca")
-    .addEventListener(
-        "input",
-        () => {
+const buscaInput = document.getElementById("busca");
+const limparBuscaBotao = document.getElementById("limpar-busca");
 
-            const busca =
-                document.getElementById(
-                    "busca"
-                ).value
-                    .trim();
+function atualizarEstadoBusca() {
+    const busca = buscaInput.value.trim();
+    limparBuscaBotao.classList.toggle("visible", busca.length > 0);
+}
 
-            if (!busca) {
+buscaInput.addEventListener(
+    "input",
+    () => {
 
-                entidadeSelecionada =
-                    null;
+        const busca =
+            buscaInput.value
+                .trim();
 
-                paisSelecionado =
-                    null;
-            }
+        atualizarEstadoBusca();
 
-            renderizarFigurinhas();
+        if (!busca) {
+
+            entidadeSelecionada =
+                null;
+
+            paisSelecionado =
+                null;
         }
-    );
 
+        renderizarFigurinhas();
+    }
+);
+
+limparBuscaBotao.addEventListener(
+    "click",
+    () => {
+        buscaInput.value = "";
+        atualizarEstadoBusca();
+        entidadeSelecionada = null;
+        paisSelecionado = null;
+        renderizarFigurinhas();
+        buscaInput.focus();
+    }
+);
+
+atualizarEstadoBusca();
 carregarProgresso();
 carregarFigurinhas();

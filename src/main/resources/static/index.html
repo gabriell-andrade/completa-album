@@ -31,11 +31,33 @@
 
     </div>
 
-    <input
-            type="text"
-            id="busca"
-            placeholder="Buscar país ou figurinha..."
-    >
+    <div class="resumo-album">
+        <div class="chip">
+            <span>Total</span>
+            <strong id="total-figurinhas">0</strong>
+        </div>
+        <div class="chip sucesso">
+            <span>Obtidas</span>
+            <strong id="obtidas-figurinhas">0</strong>
+        </div>
+        <div class="chip alerta">
+            <span>Faltantes</span>
+            <strong id="faltantes-figurinhas">0</strong>
+        </div>
+        <div class="chip info">
+            <span>%</span>
+            <strong id="percentual-figurinhas">0%</strong>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input
+                type="text"
+                id="busca"
+                placeholder="Buscar país, grupo ou figurinha..."
+        >
+        <button id="limpar-busca" class="clear-search" type="button" aria-label="Limpar busca">×</button>
+    </div>
 
     <div id="figurinhas"></div>
 
