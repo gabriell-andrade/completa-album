@@ -214,9 +214,6 @@ async function carregarProgresso() {
     const progresso =
         await response.json();
 
-    document.getElementById("progresso").textContent =
-        `Progresso: ${progresso.obtidas} / ${progresso.total} (${formatarPercentual(progresso.percentual)}%)`;
-
     document.getElementById(
         "barra-progresso"
     ).style.width =
