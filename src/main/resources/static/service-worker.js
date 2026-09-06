@@ -1,4 +1,4 @@
-const CACHE_NAME = "completa-album-v1";
+const CACHE_NAME = "completa-album-v2";
 const APP_SHELL = [
     "/",
     "/index.html",

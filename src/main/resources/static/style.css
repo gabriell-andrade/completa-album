@@ -562,6 +562,16 @@ body {
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
 }
 
+.app-footer {
+    padding: 4px 12px 20px;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 @media (max-width: 480px) {
 
     .container {
