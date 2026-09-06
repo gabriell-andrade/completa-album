@@ -188,6 +188,11 @@ const codigosEntidades = {
 
 let todasFigurinhas = [];
 
+function formatarPercentual(percentual) {
+
+    return percentual.toFixed(2);
+}
+
 function atualizarResumoAlbum() {
 
     const total = todasFigurinhas.length;
@@ -198,7 +203,7 @@ function atualizarResumoAlbum() {
     document.getElementById("total-figurinhas").textContent = total;
     document.getElementById("obtidas-figurinhas").textContent = obtidas;
     document.getElementById("faltantes-figurinhas").textContent = faltantes;
-    document.getElementById("percentual-figurinhas").textContent = `${percentual.toFixed(0)}%`;
+    document.getElementById("percentual-figurinhas").textContent = `${formatarPercentual(percentual)}%`;
 }
 
 async function carregarProgresso() {
@@ -210,7 +215,7 @@ async function carregarProgresso() {
         await response.json();
 
     document.getElementById("progresso").textContent =
-        `Progresso: ${progresso.obtidas} / ${progresso.total} (${progresso.percentual.toFixed(2)}%)`;
+        `Progresso: ${progresso.obtidas} / ${progresso.total} (${formatarPercentual(progresso.percentual)}%)`;
 
     document.getElementById(
         "barra-progresso"
